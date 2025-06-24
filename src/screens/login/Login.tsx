@@ -10,7 +10,10 @@ import styles from './styles';
 import { validateInput } from '../../utils/utils';
 import Eye from '../../assets/svg/showPassword.svg';
 import EyeClose from '../../assets/svg/hidePassword.svg';
-const Login = () => {
+import { useAuth } from '../../context/AuthContext';
+
+const Login = ({ navigation }) => {
+  const { login, register } = useAuth();
   const [isSignup, setIsSignup] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,12 +27,19 @@ const Login = () => {
     setSecureText(true);
   }, [isSignup]);
 
-  const validateAndContinue = () => {
+  const validateAndContinue = async () => {
     const isValid = validateInput(isSignup, email, password, name);
     console.log(isValid);
     if (isValid == 'valid') {
-      if (isSignup) {
-      } else {
+      try {
+        if (isSignup) {
+          await register(name, email, password);
+        } else {
+          await login(email, password);
+        }
+        navigation.navigate('Home');
+      } catch (error) {
+        alert(error.message);
       }
     } else {
       alert(isValid);
@@ -49,7 +59,7 @@ const Login = () => {
             style={styles.input}
             value={name}
             onChangeText={setName}
-            maxLength={15}
+            maxLength={30}
           />
           <TextInput
             placeholder="Email"
@@ -57,7 +67,7 @@ const Login = () => {
             style={styles.input}
             value={email}
             onChangeText={setEmail}
-            maxLength={15}
+            maxLength={30}
           />
           <View
             style={{
@@ -76,7 +86,7 @@ const Login = () => {
               secureTextEntry={secureText}
               value={password}
               onChangeText={setPassword}
-              maxLength={15}
+              maxLength={30}
             />
             <Pressable
               style={{ flex: 0.15, justifyContent: 'center' }}
@@ -102,7 +112,7 @@ const Login = () => {
             style={styles.input}
             value={email}
             onChangeText={setEmail}
-            maxLength={15}
+            maxLength={30}
           />
           <TextInput
             placeholder="Password"
@@ -111,7 +121,7 @@ const Login = () => {
             secureTextEntry={secureText}
             value={password}
             onChangeText={setPassword}
-            maxLength={15}
+            maxLength={30}
           />
           <TouchableOpacity style={styles.button} onPress={validateAndContinue}>
             <Text style={styles.buttonText}>LOGIN</Text>
