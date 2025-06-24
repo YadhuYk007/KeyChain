@@ -1,103 +1,136 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  ScrollView,
+  Pressable,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-
+import styles from './styles';
+import { validateInput } from '../../utils/utils';
+import Eye from '../../assets/svg/showPassword.svg';
+import EyeClose from '../../assets/svg/hidePassword.svg';
 const Login = () => {
-  return (
-    <ScrollView
-      style={{
-        flex: 1,
-        backgroundColor: '#FAF9F6',
-        padding: 16,
-        paddingTop: 40,
-      }}
-    >
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          paddingTop: 100,
-        }}
-      >
-        <Text style={{ fontSize: 38, fontWeight: '700', letterSpacing: -1 }}>
-          KeyChain
-        </Text>
-      </View>
-      <View style={{ justifyContent: 'center', paddingTop: 100 }}>
-        <TextInput
-          placeholder="Email"
-          placeholderTextColor={'grey'}
-          style={{
-            backgroundColor: 'white',
-            borderRadius: 8,
-            fontSize: 18,
-            padding: 12,
-            marginVertical: 10,
-            color: 'black',
-            minHeight: 50,
-          }}
-        />
+  const [isSignup, setIsSignup] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [secureText, setSecureText] = useState(true);
 
-        <TextInput
-          placeholder="Password"
-          placeholderTextColor={'grey'}
-          style={{
-            backgroundColor: 'white',
-            borderRadius: 8,
-            fontSize: 18,
-            padding: 12,
-            marginVertical: 10,
-            color: 'black',
-            minHeight: 50,
-            elevation: 0.5,
-          }}
-        />
-        <TouchableOpacity
-          style={{ backgroundColor: '#3590ae', borderRadius: 8, marginTop: 25 }}
-        >
-          <Text
+  useEffect(() => {
+    setEmail('');
+    setName('');
+    setPassword('');
+    setSecureText(true);
+  }, [isSignup]);
+
+  const validateAndContinue = () => {
+    const isValid = validateInput(isSignup, email, password, name);
+    console.log(isValid);
+    if (isValid == 'valid') {
+      if (isSignup) {
+      } else {
+      }
+    } else {
+      alert(isValid);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.title}>
+        <Text style={styles.titleText}>KeyChain</Text>
+      </View>
+      {isSignup ? (
+        <View style={styles.inputView}>
+          <TextInput
+            placeholder="Name"
+            placeholderTextColor={'grey'}
+            style={styles.input}
+            value={name}
+            onChangeText={setName}
+            maxLength={15}
+          />
+          <TextInput
+            placeholder="Email"
+            placeholderTextColor={'grey'}
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            maxLength={15}
+          />
+          <View
             style={{
-              color: 'white',
-              fontSize: 16,
-              fontWeight: '600',
-              paddingVertical: 14,
-              textAlign: 'center',
+              flexDirection: 'row',
+              borderColor: '#F0EEE9',
+              borderWidth: 1,
+              backgroundColor: 'white',
+              minHeight: 50,
+              borderRadius: 8,
             }}
           >
-            LOGIN
-          </Text>
-        </TouchableOpacity>
-      </View>
-      <View
-        style={{
-          paddingTop: 100,
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor={'grey'}
+              style={styles.passwordInput}
+              secureTextEntry={secureText}
+              value={password}
+              onChangeText={setPassword}
+              maxLength={15}
+            />
+            <Pressable
+              style={{ flex: 0.15, justifyContent: 'center' }}
+              onPress={() => setSecureText(!secureText)}
+            >
+              {secureText ? (
+                <Eye height={20} width={20} />
+              ) : (
+                <EyeClose height={20} width={20} />
+              )}
+            </Pressable>
+          </View>
 
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 16,
-            color: 'black',
-            fontWeight: '600',
-          }}
+          <TouchableOpacity style={styles.button} onPress={validateAndContinue}>
+            <Text style={styles.buttonText}>SIGN UP</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View style={styles.inputView}>
+          <TextInput
+            placeholder="Email"
+            placeholderTextColor={'grey'}
+            style={styles.input}
+            value={email}
+            onChangeText={setEmail}
+            maxLength={15}
+          />
+          <TextInput
+            placeholder="Password"
+            placeholderTextColor={'grey'}
+            style={styles.input}
+            secureTextEntry={secureText}
+            value={password}
+            onChangeText={setPassword}
+            maxLength={15}
+          />
+          <TouchableOpacity style={styles.button} onPress={validateAndContinue}>
+            <Text style={styles.buttonText}>LOGIN</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      <View style={styles.signupView}>
+        <Text style={styles.signupText1}>Dont have an account?</Text>
+        <TouchableOpacity
+          style={{ padding: 6 }}
+          onPress={() => setIsSignup(!isSignup)}
         >
-          Dont have an account?
-        </Text>
-        <TouchableOpacity style={{ padding: 6 }}>
-          <Text style={{ color: 'blue', fontSize: 16, fontWeight: '700' }}>
-            Sign up
+          <Text style={styles.signupText2}>
+            {isSignup ? `Log in` : `Sign up`}
           </Text>
         </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
