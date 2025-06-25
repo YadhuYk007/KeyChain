@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
+import { useAuth } from '../../context/AuthContext';
 
 const Loading = ({ navigation }) => {
+  const { currentUser } = useAuth();
+
+  console.log(currentUser);
+
   useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate('Login');
-    }, 2000);
+    currentUser ? navigation.navigate('Home') : navigation.navigate('Login');
   }, []);
 
   return (

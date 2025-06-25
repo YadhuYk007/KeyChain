@@ -11,6 +11,8 @@ import { validateInput } from '../../utils/utils';
 import Eye from '../../assets/svg/showPassword.svg';
 import EyeClose from '../../assets/svg/hidePassword.svg';
 import { useAuth } from '../../context/AuthContext';
+import Toast from 'react-native-toast-message';
+import strings from '../../constants/strings';
 
 const Login = ({ navigation }) => {
   const { login, register } = useAuth();
@@ -29,7 +31,6 @@ const Login = ({ navigation }) => {
 
   const validateAndContinue = async () => {
     const isValid = validateInput(isSignup, email, password, name);
-    console.log(isValid);
     if (isValid == 'valid') {
       try {
         if (isSignup) {
@@ -39,17 +40,23 @@ const Login = ({ navigation }) => {
         }
         navigation.navigate('Home');
       } catch (error) {
-        alert(error.message);
+        Toast.show({
+          type: 'error',
+          text1: error.message,
+        });
       }
     } else {
-      alert(isValid);
+      Toast.show({
+        type: 'error',
+        text1: isValid,
+      });
     }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Text style={styles.titleText}>KeyChain</Text>
+        <Text style={styles.titleText}>{strings.app_name}</Text>
       </View>
       {isSignup ? (
         <View style={styles.inputView}>
@@ -101,7 +108,7 @@ const Login = ({ navigation }) => {
           </View>
 
           <TouchableOpacity style={styles.button} onPress={validateAndContinue}>
-            <Text style={styles.buttonText}>SIGN UP</Text>
+            <Text style={styles.buttonText}>{strings.signup}</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -114,17 +121,38 @@ const Login = ({ navigation }) => {
             onChangeText={setEmail}
             maxLength={30}
           />
-          <TextInput
-            placeholder="Password"
-            placeholderTextColor={'grey'}
-            style={styles.input}
-            secureTextEntry={secureText}
-            value={password}
-            onChangeText={setPassword}
-            maxLength={30}
-          />
+          <View
+            style={{
+              flexDirection: 'row',
+              borderColor: '#F0EEE9',
+              borderWidth: 1,
+              backgroundColor: 'white',
+              minHeight: 50,
+              borderRadius: 8,
+            }}
+          >
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor={'grey'}
+              style={styles.passwordInput}
+              secureTextEntry={secureText}
+              value={password}
+              onChangeText={setPassword}
+              maxLength={30}
+            />
+            <Pressable
+              style={{ flex: 0.15, justifyContent: 'center' }}
+              onPress={() => setSecureText(!secureText)}
+            >
+              {secureText ? (
+                <Eye height={20} width={20} />
+              ) : (
+                <EyeClose height={20} width={20} />
+              )}
+            </Pressable>
+          </View>
           <TouchableOpacity style={styles.button} onPress={validateAndContinue}>
-            <Text style={styles.buttonText}>LOGIN</Text>
+            <Text style={styles.buttonText}>{strings.logout}</Text>
           </TouchableOpacity>
         </View>
       )}

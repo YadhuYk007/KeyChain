@@ -3,6 +3,7 @@ import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import Login from './screens/login/Login';
 import Navigation from './navigation/Navigation';
 import { AuthProvider } from './context/AuthContext';
+import Toast from 'react-native-toast-message';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -12,6 +13,7 @@ const App = () => {
       <View style={styles.container}>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <Navigation />
+        <Toast />
       </View>
     </AuthProvider>
   );
