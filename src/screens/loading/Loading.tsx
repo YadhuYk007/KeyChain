@@ -4,9 +4,6 @@ import { useAuth } from '../../context/AuthContext';
 
 const Loading = ({ navigation }) => {
   const { currentUser } = useAuth();
-
-  console.log(currentUser);
-
   useEffect(() => {
     currentUser ? navigation.navigate('Home') : navigation.navigate('Login');
   }, []);
