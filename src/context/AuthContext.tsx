@@ -62,8 +62,7 @@ export const AuthProvider = ({ children }) => {
     setCurrentUser(null);
   };
 
-  // Wait to render children until loading is done
-  if (loading) return null; // Or return a splash screen component
+  if (loading) return null;
 
   return (
     <AuthContext.Provider
