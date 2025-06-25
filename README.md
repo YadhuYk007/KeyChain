@@ -2,21 +2,21 @@
 
 ### Home Screen
 
-![Home Screen](./screenshots/home1.png)
+![Home Screen](./screenshots/home1.jpeg)
 
 ### Signup Screen
 
-![Home Screen](./screenshots/signup.png)
+![Home Screen](./screenshots/signup.jpeg)
 
-![Home Screen](./screenshots/signup1.png)
+![Home Screen](./screenshots/signup1.jpeg)
 
 ### Login Screen
 
-![Login Screen](./screenshots/login.png)
+![Login Screen](./screenshots/login.jpeg)
 
-![Login Screen](./screenshots/login1.png)
+![Login Screen](./screenshots/login1.jpeg)
 
-![Login Screen](./screenshots/login2.png)
+![Login Screen](./screenshots/login2.jpeg)
 
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
