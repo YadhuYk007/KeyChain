@@ -10,7 +10,12 @@ import styles from './styles';
 import { validateInput } from '../../utils/utils';
 import Eye from '../../assets/svg/showPassword.svg';
 import EyeClose from '../../assets/svg/hidePassword.svg';
-const Login = () => {
+import { useAuth } from '../../context/AuthContext';
+import Toast from 'react-native-toast-message';
+import strings from '../../constants/strings';
+
+const Login = ({ navigation }) => {
+  const { login, register } = useAuth();
   const [isSignup, setIsSignup] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,22 +29,34 @@ const Login = () => {
     setSecureText(true);
   }, [isSignup]);
 
-  const validateAndContinue = () => {
+  const validateAndContinue = async () => {
     const isValid = validateInput(isSignup, email, password, name);
-    console.log(isValid);
     if (isValid == 'valid') {
-      if (isSignup) {
-      } else {
+      try {
+        if (isSignup) {
+          await register(name, email, password);
+        } else {
+          await login(email, password);
+        }
+        navigation.navigate('Home');
+      } catch (error) {
+        Toast.show({
+          type: 'error',
+          text1: error.message,
+        });
       }
     } else {
-      alert(isValid);
+      Toast.show({
+        type: 'error',
+        text1: isValid,
+      });
     }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.title}>
-        <Text style={styles.titleText}>KeyChain</Text>
+        <Text style={styles.titleText}>{strings.app_name}</Text>
       </View>
       {isSignup ? (
         <View style={styles.inputView}>
@@ -49,7 +66,7 @@ const Login = () => {
             style={styles.input}
             value={name}
             onChangeText={setName}
-            maxLength={15}
+            maxLength={30}
           />
           <TextInput
             placeholder="Email"
@@ -57,7 +74,7 @@ const Login = () => {
             style={styles.input}
             value={email}
             onChangeText={setEmail}
-            maxLength={15}
+            maxLength={30}
           />
           <View
             style={{
@@ -76,7 +93,7 @@ const Login = () => {
               secureTextEntry={secureText}
               value={password}
               onChangeText={setPassword}
-              maxLength={15}
+              maxLength={30}
             />
             <Pressable
               style={{ flex: 0.15, justifyContent: 'center' }}
@@ -91,7 +108,7 @@ const Login = () => {
           </View>
 
           <TouchableOpacity style={styles.button} onPress={validateAndContinue}>
-            <Text style={styles.buttonText}>SIGN UP</Text>
+            <Text style={styles.buttonText}>{strings.signup}</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -102,19 +119,40 @@ const Login = () => {
             style={styles.input}
             value={email}
             onChangeText={setEmail}
-            maxLength={15}
+            maxLength={30}
           />
-          <TextInput
-            placeholder="Password"
-            placeholderTextColor={'grey'}
-            style={styles.input}
-            secureTextEntry={secureText}
-            value={password}
-            onChangeText={setPassword}
-            maxLength={15}
-          />
+          <View
+            style={{
+              flexDirection: 'row',
+              borderColor: '#F0EEE9',
+              borderWidth: 1,
+              backgroundColor: 'white',
+              minHeight: 50,
+              borderRadius: 8,
+            }}
+          >
+            <TextInput
+              placeholder="Password"
+              placeholderTextColor={'grey'}
+              style={styles.passwordInput}
+              secureTextEntry={secureText}
+              value={password}
+              onChangeText={setPassword}
+              maxLength={30}
+            />
+            <Pressable
+              style={{ flex: 0.15, justifyContent: 'center' }}
+              onPress={() => setSecureText(!secureText)}
+            >
+              {secureText ? (
+                <Eye height={20} width={20} />
+              ) : (
+                <EyeClose height={20} width={20} />
+              )}
+            </Pressable>
+          </View>
           <TouchableOpacity style={styles.button} onPress={validateAndContinue}>
-            <Text style={styles.buttonText}>LOGIN</Text>
+            <Text style={styles.buttonText}>{strings.logout}</Text>
           </TouchableOpacity>
         </View>
       )}
