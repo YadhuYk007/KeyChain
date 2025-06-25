@@ -152,7 +152,7 @@ const Login = ({ navigation }) => {
             </Pressable>
           </View>
           <TouchableOpacity style={styles.button} onPress={validateAndContinue}>
-            <Text style={styles.buttonText}>{strings.logout}</Text>
+            <Text style={styles.buttonText}>{strings.login}</Text>
           </TouchableOpacity>
         </View>
       )}
