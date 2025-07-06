@@ -13,6 +13,8 @@ import EyeClose from '../../assets/svg/hidePassword.svg';
 import { useAuth } from '../../context/AuthContext';
 import Toast from 'react-native-toast-message';
 import strings from '../../constants/strings';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/slices/userSlice';
 
 const Login = ({ navigation }) => {
   const { login, register } = useAuth();
@@ -21,7 +23,7 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [secureText, setSecureText] = useState(true);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     setEmail('');
     setName('');
@@ -35,6 +37,7 @@ const Login = ({ navigation }) => {
       try {
         if (isSignup) {
           await register(name, email, password);
+          dispatch(setUser({ name: name, email: email, password: password }));
         } else {
           await login(email, password);
         }

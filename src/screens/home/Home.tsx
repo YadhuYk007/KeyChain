@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { CommonActions } from '@react-navigation/native';
 import styles from './styles';
 import strings from '../../constants/strings';
+import { useSelector } from 'react-redux';
 
 const Home = ({ navigation }) => {
   const { currentUser, logout } = useAuth();
@@ -17,6 +18,7 @@ const Home = ({ navigation }) => {
       }),
     );
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
